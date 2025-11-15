@@ -1,0 +1,19 @@
+[Desktop Entry]
+Categories=Utility;
+Comment[en_US]=Lorem Ipsum
+Comment=Lorem Ipsum
+Exec=template
+GenericName[en_US]=
+GenericName=
+Icon=template-app_48x48
+MimeType=
+Name[en_US]=TemplateApp
+Name=TemplateApp
+Path=
+StartupNotify=true
+Terminal=true
+TerminalOptions=
+Type=Application
+Version=1.0
+X-KDE-SubstituteUID=false
+X-KDE-Username=
