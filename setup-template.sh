@@ -3,4 +3,4 @@
 mkdir ~/Templates/PacmanPackage
 cp -r ./* ~/Templates/PacmanPackage
 cd ~/Templates/PacmanPackage
-rm -f *.sh
+find . -name "*.sh" -not -name "rename-template.sh" -delete
