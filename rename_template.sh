@@ -32,7 +32,7 @@ safe_replace() {
 }
 
 # Обрабатываем все текстовые файлы
-find . -type f \( -name "*.md" -o -name "*.desktop" -o -name "Makefile" -o -name "PKGBUILD" -o -name "*.c" -o -name "*.h" \) -not -path "./.git/*" | while read -r file; do
+find . -type f \( -name "*.md" -o -name "*.desktop" -o -name "Makefile" -o -name "PKGBUILD" -o -name "*.c" -o -name "*.h" -o -name "clean.sh"\) -not -path "./.git/*" | while read -r file; do
     safe_replace "$file"
 done
 

@@ -1,6 +1,6 @@
 # Maintainer: Denis "mudetoday" Kiselev <mudetoday@gmail.com>
 pkgname=template
-pkgver=1.0
+pkgver=1.1.2
 pkgrel=1
 pkgdesc="Base template for any package written in C."
 arch=('x86_64')
