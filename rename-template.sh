@@ -6,7 +6,7 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
-OLD_NAME="template"
+OLD_NAME="test"
 NEW_NAME="$1"
 
 # Автоматическое создание названия приложения (первая буква заглавная)
@@ -32,15 +32,23 @@ safe_replace() {
 }
 
 # Обрабатываем все текстовые файлы
-find . -type f \( -name "*.md" -o -name "*.desktop" -o -name "Makefile" -o -name "PKGBUILD" -o -name "*.c" -o -name "*.h" -o -name "clean.sh"\) -not -path "./.git/*" | while read -r file; do
+find . -type f \( -name "*.md" -o -name "*.desktop" -o -name "Makefile" -o -name "PKGBUILD" -o -name "*.c" -o -name "*.h" -o -name "clean.sh" -o -name "rename-test.sh" \) ! -path "./.git/*" | while read -r file; do
     safe_replace "$file"
 done
 
 # Переименовываем файлы
 echo "Renaming..."
 
-[ -f "template.desktop" ] && mv "template.desktop" "${NEW_NAME}.desktop"
-[ -f "icons/template.png" ] && mv "icons/template.png" "icons/${NEW_NAME}.png"
+[ -f "test.desktop" ] && mv "test.desktop" "${NEW_NAME}.desktop"
+
+# Rename all icon files (both PNG and XCF)
+for file in icons/test*; do
+    if [ -f "$file" ]; then
+        new_file=$(echo "$file" | sed "s/test/$NEW_NAME/g")
+        mv "$file" "$new_file"
+        echo "Renamed: $file -> $new_file"
+    fi
+done
 
 # Обновляем название приложения в .desktop файле
 if [ -f "${NEW_NAME}.desktop" ]; then
@@ -50,11 +58,25 @@ if [ -f "${NEW_NAME}.desktop" ]; then
         s/Name\[en_US\]=TemplateApp/Name[en_US]=$APP_ESCAPED/g
         s/Comment=Lorem Ipsum/Comment=$APP_ESCAPED Application/g
         s/Comment\[en_US\]=Lorem Ipsum/Comment[en_US]=$APP_ESCAPED Application/g
+        s/Exec=test/Exec=$NEW_ESCAPED/g
+        s/Icon=test-app_48x48/Icon=$NEW_ESCAPED-app_48x48/g
     " "${NEW_NAME}.desktop"
+fi
+
+# Additional replacements for specific patterns
+if [ -f "Makefile" ]; then
+    sed -i "s/TARGET = test/TARGET = $NEW_ESCAPED/g" "Makefile"
+    # Also update icon references in Makefile
+    sed -i "s/icons\/test-app_/icons\/$NEW_ESCAPED-app_/g" "Makefile"
+fi
+
+if [ -f "PKGBUILD" ]; then
+    sed -i "s/pkgname=test/pkgname=$NEW_ESCAPED/g" "PKGBUILD"
 fi
 
 echo "Complete!"
 echo "Check: grep -r 'Name=' ${NEW_NAME}.desktop"
 echo "Check: grep -r '$NEW_NAME' ."
 
-rm -f ./rename_template.sh
+# Create a backup of the original script if you want to keep it
+# cp ./rename-test.sh ./rename-test-backup.sh
