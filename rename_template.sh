@@ -40,7 +40,7 @@ done
 echo "Renaming..."
 
 [ -f "template.desktop" ] && mv "template.desktop" "${NEW_NAME}.desktop"
-[ -f "icons/template.xpm" ] && mv "icons/template.xpm" "icons/${NEW_NAME}.xpm"
+[ -f "icons/template.png" ] && mv "icons/template.png" "icons/${NEW_NAME}.png"
 
 # Обновляем название приложения в .desktop файле
 if [ -f "${NEW_NAME}.desktop" ]; then
